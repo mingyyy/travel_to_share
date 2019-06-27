@@ -94,9 +94,9 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'db_tts',
-#         'USER': 'tts',
-#         'PASSWORD': 'Iwillbe1star',
+#         'NAME': 'tts',
+#         'USER': 'admin',
+#         'PASSWORD': 'password',
 #         'HOST': 'localhost',
 #         'PORT': '',
 #     }
