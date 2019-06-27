@@ -194,9 +194,7 @@ title, content, email
 
 ---
 ## Folder structure of the project
-github repository: finalproject
-
-            -| env (virtual environment)
+github repository: 
             -| proj_travelshare
                 -| app_search
                     -| templatetags
