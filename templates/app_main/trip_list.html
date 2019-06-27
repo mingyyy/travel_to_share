@@ -1,0 +1,107 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Upcoming Trips <span class="badge badge-info">{{num_trips}}</span></h2>
+
+<div class="container mr-auto">
+    <div class="row">
+        <div class="col-sm-9"></div>
+        <div class="col-sm-3">
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="input-group mb-2 input-group-sm ">
+                  <select class="form-control" id="sel1" name="select">
+                    <option value="1">Start date</option>
+                    <option value="2">End date</option>
+                    <option value="3">Destination</option>
+                    <option value="4">Traveler</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">Sort</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% for item in trips %}
+<div class="media border p-3">
+    <p><img src="{{item.user.profiletraveler.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
+    <div class="media-body" id="#myDIV">
+        <h5 style="">
+           {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
+            <a href="{% url 'app_main:calendar_trip_traveler' item.user.id %}"> <i class="fa fa-calendar" href=""></i></a>
+
+        </h5>
+        <p><i style="color: grey; display: inline">
+            <a href="{% url 'profile_traveler' item.user.id %}" >
+                {{item.user.username.title}}
+            </a>
+             is going to
+            {%if item.destination %}
+                <span class="badge badge-primary">{{item.destination}}</span>
+            {% else %}
+                <span class="badge badge-secondary">???Mysterious Location</span>
+            {% endif %}
+        </i></p>
+        <p>{{item.details|slice:":100"}}...</p>
+    </div>
+</div>
+{% endfor %}
+
+<br>
+
+{% if trips.has_other_pages %}
+    <ul class="pagination">
+        {% if trips.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% if trips.number|add:'-3' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.number|add:'-4' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in trips.paginator.page_range %}
+            {% if trips.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% elif i > trips.number|add:'-4' and i < trips.number|add:'4' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if trips.paginator.num_pages > trips.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.number|add:'4' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if trips.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        <!--$(function() {-->
+            <!--$('.form-control').val( {{selected}} );-->
+        <!--});-->
+
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myDIV *").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
+      $('#sel1').val( {{selected}} );
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'app_main/base.html' %}
+
+{% block content %}
+<div class="content-section">
+  <h2>Sign up for a free account</h2>
+  <br>
+  <p class="lead">Choose the type of account you want to create</p>
+
+  <form method="post" class="form-inline">
+    {% csrf_token %}
+    <input type="radio" name="type" value="person" class="form-control  ml-sm-2 "> I'm a traveler<br>
+    <input type="radio" name="type" value="org" class="form-control  ml-sm-2 "> I'm a local host<br>
+    <button type="submit" class="btn btn-primary mb-2 ml-sm-2">Create Account</button>
+  </form>
+
+</div>
+{% endblock %}
+

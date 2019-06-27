@@ -1,0 +1,219 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load user_extras %}
+{% block content %}
+
+    <h3>Traveler Profile</h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            {% if profile.photo %}
+                <img id='article-img' src="{{profile.photo.url}}" alt="profile picture" width="100%"><br>
+            {% endif %}
+            <br>
+            <div class="media-body">
+              <p class="text-secondary">{{ profile.user.email }}</p>
+            </div>
+            <br>
+
+            {% if offer %}
+                <h5>Current Offers</h5>
+                <div>
+                    <ul class="list-group">
+                        {% for item in offer %}
+                            <li class="list-group-item">
+                                  <a href="#" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
+                                   <i class="fa fa-bars"></i>  <span class="px-2">{{ item.title }}</span>
+                                  </a>
+                                  <div class="modal" id="myModal{{forloop.counter}}">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">{{ item.title }}</h4>
+                                          <a type="button" class="close" data-dismiss="modal">&times;</a>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <div class="content-section">
+                                                <div class="article-metadata">
+                                                    <p><span class='text-muted'>Type of your offer: </span> {{ item.type }}</p>
+                                                </div>
+
+                                                <div class="article-metadata">
+                                                    <p><span class='text-muted'>Frequency of your offer: </span> {{ item.frequency }} </p>
+                                                </div>
+
+                                                <div class="article-metadata">
+                                                    <p><span class='text-muted'>Duration of your offer: </span> {{ item.duration }} </p>
+                                                </div>
+
+                                                <div class="article-metadata">
+                                                    <p><span class='text-muted'>Description: </span> </p>
+                                                    <p>{{ item.description }}</p>
+                                                </div>
+
+                                                <div class="article-metadata">
+                                                    <p><span class='text-muted'>Requirement of the space: </span> </p>
+                                                    <p>{{ item.requirement }}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            {% else %}
+                <h5>No info on Offer</h5>
+            {% endif %}
+                <br>
+            {% if trips %}
+                <h5>Coming Trips</h5>
+                    <div>
+                        <ul class="list-group">
+                            {% for trip in trips %}
+                                <li class="list-group-item">
+                                      <a href="#" data-toggle="modal" data-target="#tripModal{{forloop.counter}}">
+                                       <i class="fa fa-plane"></i>  <span class="px-2">{{ trip.destination }}</span>
+                                      </a>
+                                      <div class="modal" id="tripModal{{forloop.counter}}">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">{{ trip.destination }}</h4>
+                                              <a type="button" class="close" data-dismiss="modal">&times;</a>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <div class="content-section">
+                                                    <div class="article-metadata">
+                                                        <p><span class='text-muted'>Start Date: </span> {{ trip.start_date }}</p>
+                                                    </div>
+
+                                                    <div class="article-metadata">
+                                                        <p><span class='text-muted'>End Date: </span> {{ trip.end_date }} </p>
+                                                    </div>
+
+                                                    <div class="article-metadata">
+                                                        <p><span class='text-muted'>Trip Details: </span> {{ trip.details }} </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+            {% else %}
+                <h5>No Trip Coming </h5>
+            {% endif %}
+
+        </div>
+
+        <div class="col-sm-9">
+            <div class="content-section">
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Full Name: </span>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Gender: </span> {{ profile.gender }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Birth date: </span> {{ profile.birth_date }} </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>From: </span> {{ profile.nationality }} </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Phone: </span> {{ profile.phone }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Languages: </span>
+                    {% if lan %}
+                        <ul>
+                            {% for v in lan %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Links: </span>
+                    {% if link %}
+                        <ul>
+                            {% for v in link %}
+                                <li>
+                                    {% with v|split:"-" as url %}
+                                        {% for x in url %}
+                                            {% if forloop.counter == 1%}
+                                                {{x}} -
+                                            {% else %}
+                                                <a href="{{x}}">{{ x }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Bio: </span></p>
+                    <p>{{ profile.bio }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Expertise: </span>
+                        <ul>
+                            {% for v in expertise %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Experience: </span></p>
+                    <p>{{ profile.experience }}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

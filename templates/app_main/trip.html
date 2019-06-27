@@ -1,0 +1,56 @@
+{% extends "app_main/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<br>
+{% if id != None %}
+    <h3 class="left">Update Trip - {{ user.username }}</h3>
+{% else %}
+    <h3 class="left">Add New Trip - {{ user.username }}</h3>
+{% endif %}
+
+    <a class="btn btn-info right" href="{% url 'app_main:calendar_trip_private' user.id %}?{{prev_month}}">My Calendar</a>
+    <br><br>
+
+    <form method="post">
+        {% csrf_token %}
+        <table class="form form-table">
+            {{ form|crispy }}
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-info right">Submit</button>
+                </td>
+            </tr>
+
+        </table>
+        {% if id != None %}
+        <br>
+        <div class="alert alert-warning">
+            If you wish to delete this trip, please type confirm below, then click on the Delete button.
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_confirm|crispy }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-danger float-right">Delete</button>
+                    </div>
+                </div>
+        </div>
+        {% endif %}
+    </form>
+
+    <br><br>
+{% endblock %}
+
+{% block script %}
+      <script>
+        $(function () {
+          $("#id_start_date").datepicker(
+          {format: 'yyyy-mm-dd'});
+
+          $("#id_end_date").datepicker(
+          {format: 'yyyy-mm-dd'});
+        });
+      </script>
+{% endblock %}

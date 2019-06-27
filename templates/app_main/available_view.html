@@ -1,0 +1,39 @@
+{% extends "app_main/base.html" %}
+{% load static %}
+{% block content %}
+<br>
+    <h2 class="left">
+        View
+        <em>
+            {% if profile.name %}
+                {{profile.name}}
+            {% else %}
+                {{profile.user.username}}
+            {% endif %}
+        </em>
+        's availability
+    </h2>
+    <a class="btn btn-info right" href="{% url 'app_main:calendar_available_host' profile.user_id %}">Back to Calendar</a>
+
+<br>
+
+
+<div class="container">
+    <br>
+
+    <h5><span class='text-muted'>From:</span></h5>
+    <div class="shadow p-4 mb-4 bg-light"><em>{{available.start_date|date:"D, d M Y" }}</em></div>
+
+    <h5><span class='text-muted'>To:</span></h5>
+    <div class="shadow p-4 mb-4 bg-white"><em>{{available.end_date|date:"D, d M Y" }}</em></div>
+
+    <h5><span class='text-muted'>Summary:</span></h5>
+    <div class="shadow p-4 mb-4 bg-light">{{available.summary}}</div>
+
+    <h5><span class='text-muted'>Details:</span></h5>
+    <div class="shadow p-4 mb-4 bg-white">{{available.extra_info}}</div>
+
+</div>
+
+    <br><br>
+{% endblock %}

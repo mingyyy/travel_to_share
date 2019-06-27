@@ -1,0 +1,97 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <small>
+                Disclaimer: This web app is NOT responsible for any decision made based on the information provided here.
+                Please always check the official websites provide by the governments of respective countries.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <form action="" method="get">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Submit" name="get_visa_info" id="show_visa">
+            </form>
+        </div>
+
+        <div class="col-md-9">
+            <h2>Visa Requirement </h2>
+
+            {% if requirement == "EMBASSY_VISA" %}
+                <div class="alert alert-warning">
+                    {% for item in textual %}
+                      <p>{{item}}</p>
+                    {% endfor%}
+                </div>
+            {% elif requirement == "NOT_REQUIRED" %}
+                <div class="alert alert-success">
+                    {% for item in textual %}
+                      <p>{{item}}</p>
+                    {% endfor%}
+                </div>
+            {% elif requirement == "Unknown" %}
+                <div class="alert alert-secondary">
+                    Sorry, currently we don't have information on this country. Check back later on, please!
+                </div>
+            {% else%}
+                <div class="alert alert-info">
+                    {% for item in textual %}
+                      <p>{{item}}</p>
+                    {% endfor%}
+                </div>
+            {% endif %}
+
+            <button style="border-radius: 50%;" id="fafa"><i class="fa fa-plus-circle"></i></button>
+            <!--<button type="submit" value='Submit' name="get_country_info" style="border-radius: 50%;">Tell me more about my destination</button>-->
+
+            <div class="jumbotron jumbotron-fluid" style="padding: 4px; display: none;">
+              <div class="container">
+                  <br>
+                <p><strong>Visa requirement:</strong> {{ requirement }}</p>
+                <p><strong>Allowed stay:</strong> {{ allowedstay}} </p>
+                <p> <strong>Port Restriction:</strong> {{ portrestriction }}</p>
+                <p class="border-bottom "><strong>Type:</strong> {{ type }}</p>
+                <p><strong>Passport validity:</strong> {{ passport_validity }}</p>
+                <p class="border-bottom "><strong>Passport blank pages:</strong> {{ passport_blank_pages }}</p>
+                <p><strong>Currency at Arrival:</strong> {{ currency_arrival }}</p>
+                <p><strong>Currency at Exit:</strong> {{ currency_exit }}</p>
+              </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+  $(".jumbotron").find("p").hover(
+      function(){
+      $(this).css("background-color", "pink");},
+      function(){
+      $(this).css("background-color", "white");});
+
+});
+</script>
+{% endblock %}

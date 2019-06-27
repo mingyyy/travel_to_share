@@ -1,0 +1,12 @@
+{% extends "app_main/base.html" %}
+{% block content %}
+    <div class="clearfix">
+        <a class="btn btn-info left" href="{% url 'app_main:calendar_available' user.id %}?{{prev_month}}">Previous Month</a>
+        <a class="btn btn-info right" href="{% url 'app_main:calendar_available' user.id %}?{{next_month}}">Next Month</a>
+    </div>
+    {{ calendar }}
+    <div class="clearfix">
+        <a class="btn btn-info right" href="{% url 'app_main:available_new' %}">New Availability</a>
+    </div>
+
+{% endblock %}

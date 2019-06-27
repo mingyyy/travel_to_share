@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Travel to Share</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
+
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <!-- Fengyuan Chen's Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+    <title>Share Away</title>
+
+</head>
+<body>
+        <header class="site-header">
+
+          <nav class="navbar navbar-expand-sm navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <!--<a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" width="81" height="81" style=""></a>-->
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                      aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                    <span class="navbar-nav text-center pt-1 pb-0 border-right">
+                    <a href="{% url 'app_main:home' %}" class="nav-item nav-link p-10"><small><i class="fa fa-home d-block"></i>Home</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:travelers' %}" class="nav-item nav-link p-10"><small><i class="fa fa-user-circle d-block"></i>Travelers</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 border-right">
+                    <a href="{% url 'app_main:trip_list' %}" class="nav-item nav-link p-10"><small><i class="fa fa-plane d-block"></i>Trips</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:hosts' %}" class="nav-item nav-link p-10"><small><i class="fa fa-university d-block"></i>Hosts</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 border-right">
+                    <a href="{% url 'app_main:available_list' %}" class="nav-item nav-link p-10"><small><i class="fa fa-table d-block"></i>Availables</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:get_info'  %}" class="nav-item nav-link p-10"><small><i class="fa fa-info-circle d-block"></i>Info</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:contact'  %}" class="nav-item nav-link p-10"><small><i class="fa fa-envelope-o d-block"></i>Contact</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'search'  %}" class="nav-item nav-link p-10"><small><i class="fa fa-search d-block"></i>Search</small></a>
+                    </span>
+                </div>
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'index' %}" class="nav-item nav-link p-10"><small><i class="fa fa-id-card d-block"></i>{{user.username}}</small></a>
+                        </span>
+
+                        {% if user.type == '0' %}
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'program_add' %}" class="nav-item nav-link p-10"><small><i class="fa fa-plus-circle d-block"></i>Offer</small></a>
+                            </span>
+
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'app_main:calendar_trip_private' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
+                            </span>
+
+                        {% elif user.type == '1' %}
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'space_add' %}" class="nav-item nav-link p-10"><small><i class="fa fa-plus-circle d-block"></i>Offer</small></a>
+                            </span>
+
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'app_main:calendar_available_private' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Available</small></a>
+                            </span>
+
+                        {% endif %}
+
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'logout' %}" class="nav-item nav-link p-10"><small><i class="fa fa-sign-out d-block"></i>Logout</small></a>
+                        </span>
+
+                    {% else %}
+
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'login' %}" class="nav-item nav-link p-10"><small><i class="fa fa-sign-in d-block"></i>Login</small></a>
+                        </span>
+
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'register' %}" class="nav-item nav-link p-10"><small><i class="fa fa-user-plus d-block"></i>Register</small></a>
+                        </span>
+
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <br><br>
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+            <br><br>
+            {% if messages %}
+                {% for message in messages%}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor%}
+            {% endif %}
+            <br>
+            {% block content %}
+            {% endblock %}
+
+            {% block script %}
+            {% endblock %}
+
+        </div>
+
+      </div>
+    </main>
+
+
+    <br><br>
+    <footer>
+        <div class="navbar navbar-expand-sm bg-light navbar-dark fixed-bottom">
+
+            <span class="badge badge-pill badge-light ml-auto">Copyleft Mingy@2019</span>
+        </div>
+    </footer>
+
+</body>
+</html>

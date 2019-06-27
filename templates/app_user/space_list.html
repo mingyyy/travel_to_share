@@ -1,0 +1,45 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<link rel="stylesheet" type="text/css" href="{% static 'css/acco.css' %}">
+    <h3>List of Available Space for
+        <span class='badge badge-primary'>
+            {% if user.profilehost.name %}
+                {{ user.profilehost.name }}
+            {% else %}
+                {{ user.username}}
+            {% endif %}
+        </span>
+    </h3>
+    <br>
+
+    <div id="accordion">
+
+        {% for item in space %}
+          <div class="card">
+            <div class="card-header" id="heading-{{forloop.counter}}">
+              <h5 class="mb-0">
+                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-{{forloop.counter}}" aria-expanded="false" aria-controls="collapse-{{forloop.counter}}">
+                  Space {{forloop.counter}} - {{item}}
+                </a>
+              </h5>
+            </div>
+            <div id="collapse-{{forloop.counter}}" class="collapse" data-parent="#accordion" aria-labelledby="heading-{{forloop.counter}}">
+              <div class="card-body">
+                    <img class="card-img-top rounded-circle" src="{{ item.photo.url }}" alt="space image" style="width:90px; height:90px">
+                    {{item.detail}}
+              </div>
+
+              <div class="card-footer">
+                <button class="badge badge-secondary float-left"><a href="{% url 'space_update' item.id %}" style="color:white"><i class="fa fa-pencil"></i>Edit</a></button>
+                <button class="badge badge-secondary float-right"><a href="{% url 'space_delete' item.id %}" style="color:white"><i class="fa fa-trash"></i>Delete</a></button>
+              </div>
+              <br>
+            </div>
+          </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

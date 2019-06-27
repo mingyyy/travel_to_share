@@ -1,0 +1,39 @@
+{% extends "app_main/base.html" %}
+{% load static %}
+{% block content %}
+<br>
+    <h2 class="left">
+        View
+        <em>
+            {% if profile.first_name %}
+                {{profile.first_name}}
+            {% else %}
+                {{profile.user.username}}
+            {% endif %}
+        </em>
+        's trip
+    </h2>
+    <a class="btn btn-info right" href="{% url 'app_main:calendar_trip_traveler' profile.user_id %}">Back to Calendar</a>
+
+<br>
+
+
+<div class="container">
+    <br>
+
+    <h5><span class='text-muted'>From:</span></h5>
+    <div class="shadow p-4 mb-4 bg-light"><em>{{trip.start_date|date:"D, d M Y" }}</em></div>
+
+    <h5><span class='text-muted'>To:</span></h5>
+    <div class="shadow p-4 mb-4 bg-white"><em>{{trip.end_date|date:"D, d M Y" }}</em></div>
+
+    <h5><span class='text-muted'>Destination:</span></h5>
+    <div class="shadow p-4 mb-4 bg-light">{{trip.destination}}</div>
+
+    <h5><span class='text-muted'>Details:</span></h5>
+    <div class="shadow p-4 mb-4 bg-white">{{trip.details}}</div>
+
+</div>
+
+    <br><br>
+{% endblock %}

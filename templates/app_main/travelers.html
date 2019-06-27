@@ -1,0 +1,68 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h2>List of Travelers <span class="badge badge-info">{{num_traveler}} </span> </h2>
+<br>
+{% for item in profile %}
+<div class="media border p-3">
+
+    <figure>
+      <img src="{{item.photo.url}}" alt="Profile Picture" class="mr-3 mt-3" style="width:108px;">
+      <figcaption><a href="{% url 'profile_traveler' item.user_id %}" >{{item.user.username}}</a></figcaption>
+    </figure>
+
+    <div class="media-body" id="myDIV">
+       <h4 style="">
+            <a href="{% url 'profile_traveler' item.user_id %}" >
+                {% if item.user.first_name %}
+                    {{ item.user.first_name.title }} {{ item.user.last_name.title }}
+                {% else %}
+                    {{ item.user.username.title }}
+                {% endif %}
+            </a>
+       </h4>
+       <small><i style="color: grey; display: inline"> Joined on {{item.user.date_joined}}</i></small>
+
+    <p>{{item.bio|slice:":250"}}...</p>
+    <p>
+        {%if item.languages.all %}
+            {% for l in item.languages.all %}
+                <span class="badge badge-primary"><small>{{l.language}}</small></span>
+            {% endfor %}
+        {% else %}
+            <span class="badge badge-secondary"><small>No yet provided</small></span>
+        {% endif %}
+    </p>
+    </div>
+</div>
+<br>
+{% endfor %}
+<br>
+
+{% if profile.has_other_pages %}
+    <ul class="pagination">
+        {% if profile.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ profile.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% for i in profile.paginator.page_range %}
+            {% if profile.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if profile.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ profile.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'app_main/base.html' %}
+{% load crispy_forms_tags%}
+{% load static %}
+
+{% block content %}
+
+    <div class="progress">
+      <div class="progress-bar bg-secondary" style="width:25%">
+        Personal
+      </div><div class="progress-bar bg-light" style="width:.2%"></div>
+      <div class="progress-bar bg-secondary" style="width:25%">
+        Professional
+      </div><div class="progress-bar bg-light" style="width:.2%"></div>
+      <div class="progress-bar bg-primary" style="width:25%">
+        Social
+      </div>
+    </div>
+    <br>
+
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profiletraveler.photo.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+            <p><span class="badge badge-primary">Please add your social links/Personal websites/Others</span></p>
+            <h3>
+                {% for brand in brands %}
+                    <i class="fa fa-{{brand}}"> </i>
+                {% endfor %}
+            </h3>
+            <br>
+
+            <ul class="list-group">
+        {% if user.is_authenticated %}
+            {% for item in links %}
+                <li class="list-group-item"><i class="fa fa-link"></i> {{item}}</li>
+
+                <button class="badge badge-secondary float-right"><a href="{% url 'link_delete' item.id %}" style="color:white"><i class="fa fa-trash"></i>Delete</a></button>
+                <br>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ formset.management_form }}
+
+                {% for form in formset %}
+                <div class="row form-row spacer">
+                    <div class="col-1 mb-2 " >
+                        <label class="mr-sm-2 mb-0 sr-only">{{form.name.label}}</label>
+                    </div>
+                            <div class="col-2 mr-sm-2">
+                        <div class="input-group">
+                            {{form.name}}
+                        </div>
+                        <br>
+                    </div>
+
+                    <div class="col-6 mr-sm-2">
+                        <div class="input-group">
+                            {{form.url}}
+                            <div class="input-group-append">
+                                <button class="btn btn-success add-form-row">+</button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <br>
+                <div class="row spacer">
+                    <div class="col-2 offset-1">
+                        <button type="submit" class="btn btn-block btn-primary" name='save' value="add"><i class="fa fa-plus-circle"></i> Add Links</button>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <button class="btn btn-info btn-sm" type="submit" name="save" value="prev">Previous</button>
+                    <button class="btn btn-info btn-sm float-right" type="submit" name="save" value="next">Next</button>
+                </div>
+
+            </form>
+    </div>
+<br>
+
+{% endblock content %}
+
+{% block script %}
+
+<script type="text/javascript">
+function updateElementIndex(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+function cloneMore(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+        var name = $(this).attr('name')
+        if(name) {
+            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        }
+    });
+    newElement.find('label').each(function() {
+        var forValue = $(this).attr('for');
+        if (forValue) {
+          forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+          $(this).attr({'for': forValue});
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.form-row:not(:last)');
+    conditionRow.find('.btn.add-form-row')
+    .removeClass('btn-success').addClass('btn-danger')
+    .removeClass('add-form-row').addClass('remove-form-row')
+    .html('-');
+    return false;
+}
+function deleteForm(prefix, btn) {
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    if (total > 1){
+        btn.closest('.form-row').remove();
+        var forms = $('.form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndex(this, prefix, i);
+            });
+        }
+    }
+    return false;
+}
+$(document).on('click', '.add-form-row', function(e){
+    e.preventDefault();
+    cloneMore('.form-row:last', 'form');
+    return false;
+});
+$(document).on('click', '.remove-form-row', function(e){
+    e.preventDefault();
+    deleteForm('form', $(this));
+    return false;
+});
+</script>
+{% endblock%}

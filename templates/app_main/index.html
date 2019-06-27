@@ -1,0 +1,62 @@
+{% extends 'app_main/base.html' %}
+
+{% block content %}
+
+  <h2>Welcome {{user.username}}!</h2>
+
+  <p class="lead">Please choose from the following options</p>
+
+    <ul class="list-group">
+        {% if user.is_authenticated %}
+            {% if user.type == '0' %}
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-6">
+                            <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}"><i class="fa fa-book fa-fw" aria-hidden="true"></i> Traveler Profile Preview</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list fa-fw" aria-hidden="true"></i> List of Program Offer</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'app_main:calendar_trip_private' user.id %}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> My Trips in Calendar</a></li>
+                            <br>
+                      </div>
+
+                      <div class="col-md-6">
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Traveler Profile - Personal</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler2' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Traveler Profile - Professional</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler3' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Traveler Profile - Social Links</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i> Add Program Offer</a></li>
+                      </div>
+                  </div>
+              </div>
+            {% elif user.type == '1' %}
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}"><i class="fa fa-book fa-fw" aria-hidden="true"></i> Local Host Profile Preview</a></li>
+                        <br>
+                        <li class="list-group-item"><a href="{% url 'space_list' user.id  %}"><i class="fa fa-list fa-fw" aria-hidden="true"></i> List of Space Availability</a></li>
+                        <br>
+                        <li class="list-group-item"><a href="{% url 'app_main:calendar_available_private' user.id %}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> My Availability in Calendar</a></li>
+                        <br>
+                      </div>
+
+                      <div class="col-md-6">
+                        <li class="list-group-item"><a href="{% url 'profile_update_host' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Local Host Profile - Basic</a></li>
+                        <br>
+                        <li class="list-group-item"><a href="{% url 'profile_update_host2' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Local Host Profile - Interest</a></li>
+                        <br>
+                        <li class="list-group-item"><a href="{% url 'profile_update_host3' %}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Update Local Host Profile - Social Links</a></li>
+                        <br>
+                        <li class="list-group-item"><a href="{% url 'space_add' %}" ><i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i> Add Available Space</a></li>
+                      </div>
+                  </div>
+              </div>
+
+            {% endif %}
+        {% endif %}
+    </ul>
+
+{% endblock %}

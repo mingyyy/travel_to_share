@@ -1,0 +1,164 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load user_extras %}
+{% block content %}
+
+    <h3>Local Host Profile</h3>
+    <br>
+    <div class="row">
+
+        <div class="col-sm-3">
+            {% if profile.photo %}
+                <img src="{{profile.photo.url}}" alt="profile picture" width="100%"><br>
+            {% endif %}
+            <br>
+            <div class="media-body">
+              <p class="text-secondary">{{ profile.user.email }}</p>
+            </div>
+
+            <br>
+
+            {% if offer%}
+                <h5>Available Spaces</h5>
+                <div>
+                    <ul class="list-group">
+                        {% for item in offer %}
+                            <li class="list-group-item">
+                                  <a href="#" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
+                                    <i class="fa fa-location-arrow"></i> <span class="px-2">{{ item.title }}</span>
+                                  </a>
+                                  <div class="modal" id="myModal{{forloop.counter}}">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">{{ item.title }}</h4>
+                                          <a type="button" class="close" data-dismiss="modal">&times;</a>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+
+                                            <div class="card">
+                                              <img class="card-img-left" src="{{item.photo.url}}" alt="Space Picture" width="80%">
+                                              <div class="card-body">
+                                                <p class="card-text">{{ item.detail }}</p>
+                                              </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <h5> Space Not Yet Listed</h5>
+            {% endif %}
+        </div>
+
+        <div class="col-sm-9">
+            <div class="content-section">
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Org Name: </span>{{ profile.name }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Org Type: </span>{{ profile.type }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Phone Number: </span>{{ profile.phone }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Languages: </span>
+                        <ul>
+                            {% for v in lan %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Links: </span>
+                    {% if link %}
+                        <ul>
+                            {% for v in link %}
+                                <li>
+                                    {% with v|split:"-" as url %}
+                                        {% for x in url %}
+                                            {% if forloop.counter == 1%}
+                                                {{x}} -
+                                            {% else %}
+                                                <a href="{{x}}">{{ x }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Description: </span></p>
+                    <p>{{ profile.description }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Interest: </span>
+                        <ul>
+                            {% for v in interest %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Interest Details: </span></p>
+                    <p>{{ profile.interest_details }}</p>
+                </div>
+
+            </div>
+
+            <div class="content-section">
+                <p><span class='text-muted'>Address: </span>{{profile.address}}</p>
+            </div>
+
+            <div id="map"></div>
+ <br><br><br>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+        <script>
+          var map;
+          var lat = {{ lat }};
+          var lng = {{ lon }};
+          function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: lat, lng: lng},
+              zoom: 14
+            });
+          }
+        </script>
+
+
+        <script src="https://maps.googleapis.com/maps/api/js?key={{key}}&callback=initMap"
+        async defer></script>
+{% endblock %}

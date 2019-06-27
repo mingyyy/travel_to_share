@@ -1,0 +1,124 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Localhost Availability <span class="badge badge-info">{{num_available}} </span></h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9"></div>
+        <div class="col-sm-3">
+            <div class="container">
+                <form action="" method="post">
+                    {% csrf_token %}
+                  <div class="input-group mb-2 input-group-sm">
+                        <select class="form-control" id="sel1" name="select">
+                            <option value="1">Start date</option>
+                            <option value="2">End date</option>
+                            <option value="3">Localhost</option>
+                            <option value="4">Summary</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">Sort</button>
+                        </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for item in available %}
+<div class="media border p-3">
+  <p><img src="{{item.user.profilehost.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
+  <div class="media-body">
+        <h5 style="">
+           {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
+            <a href="{% url 'app_main:calendar_available_host' item.user.id %}"> <i class="fa fa-calendar" href=""></i></a>
+
+        </h5>
+
+        <i style="color: grey; display: inline">
+            <a href="{% url 'profile_host' item.user.id %}" >
+                {{item.user.username.title}}
+            </a>
+        </i>
+
+
+        <p>{{item.extra_info|slice:":100"}}...</p>
+        <p>
+            {%if item.summary %}
+                <span class="badge badge-primary">{{item.summary}}</span>
+            {% else %}
+                <span class="badge badge-secondary">???Mysterious Location</span>
+            {% endif %}
+        </p>
+
+  </div>
+</div>
+{% endfor %}
+
+<br>
+
+{% if available.has_other_pages %}
+    <ul class="pagination">
+        {% if available.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ available.previous_page_number }}">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </span>
+            </li>
+        {% endif %}
+
+        {% if available.number|add:'-3' > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ available.number|add:'-4' }}">&hellip;</a>
+            </li>
+        {% endif %}
+
+        {% for i in available.paginator.page_range %}
+            {% if available.number == i %}
+                <li class="page-item active">
+                    <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+            {% elif i > available.number|add:'-4' and i < available.number|add:'4' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if available.paginator.num_pages > available.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ available.number|add:'4' }}">&hellip;</a>
+            </li>
+        {% endif %}
+
+        {% if available.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ available.next_page_number }}">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        $(function() {
+            $('.form-control').val( {{selected}} );
+        });
+    </script>
+{% endblock %}

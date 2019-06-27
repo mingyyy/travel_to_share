@@ -1,0 +1,85 @@
+{% extends 'app_main/base.html' %}
+{% load crispy_forms_tags%}
+{% load static %}
+
+{% block content %}
+    <br>
+
+    <div class="progress">
+      <div class="progress-bar bg-secondary" style="width:25%"><i class="fa fa-dot" style="color: white"></i>
+        Basics
+      </div>
+      <div class="progress-bar bg-light" style="width:.2%"></div>
+      <div class="progress-bar bg-secondary" style="width:25%">
+        Interest
+      </div>
+      <div class="progress-bar bg-light" style="width:.2%"></div>
+      <div class="progress-bar bg-secondary" style="width:25%">
+        Social
+      </div>
+      <div class="progress-bar bg-light" style="width:.2%"></div>
+      <div class="progress-bar bg-primary" style="width:25%">
+        Space offer
+      </div>
+    </div>
+    <br>
+
+
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profilehost.photo.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+
+          <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group" >
+                <legend class="border-bottom mb-4">
+                    <span class="badge badge-primary">
+                    {% if user.type == '0' %}
+                        {% if program.count == 0 %}
+                            You have no offer at the moment
+                        {% elif program.count == 1 %}
+                            You have only one offer so far
+                        {% else %}
+                            You have {{program.count}} programs now
+                        {% endif %}
+                    {% elif user.type == '1' %}
+                        {% if space.count == 0 %}
+                            You have no entry at the moment
+                        {% elif space.count == 1 %}
+                            You have only one entry so far
+                        {% else %}
+                            You have {{space.count}} entries now
+                        {% endif %}
+                    {% endif %}
+                    </span>
+                </legend>
+                <ul>
+                    {% for item in space %}
+                        <li style="list-style-type: circle;">{{ item.title }}</li>
+                    {% endfor %}
+                </ul>
+
+                <legend class="border-bottom mb-4">
+                    {% if user.type == '0' %}
+                        Add New Traveler Offer
+                    {% elif user.type == '1' %}
+                        Add Localhost Available Space
+                    {% endif %}
+                </legend>
+                        {{form|crispy}}
+                </fieldset>
+
+                <div class="form-group">
+                    <button class="btn btn-info btn-sm" type="submit" name="save" value="prev">Previous</button>
+                    <button class="btn btn-info btn-sm float-right" type="submit" name="save" value="next">Review</button>
+                </div>
+
+          </form>
+    </div>
+
+{% endblock content %}

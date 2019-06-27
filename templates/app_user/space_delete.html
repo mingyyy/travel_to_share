@@ -1,0 +1,21 @@
+{% extends "app_main/base.html" %}
+
+{% block content %}
+    <h3>{{user.profilehost.name}}:</h3>
+
+    <div class="content-section">
+
+        <p>Offer {{space.id}}. <a href="{% url 'space_detail' space.id %}">{{ space.title }}</a></p>
+
+    </div>
+
+    <h5>Are you sure you want to delete this entry?</h5>
+    <br>
+    <form action="{% url 'space_delete' space.id %}" method='post'>
+    {% csrf_token%}
+    {{form.as_p}}
+    <button name = "submit">Yes, delete!</button>
+
+    </form>
+
+{% endblock %}
