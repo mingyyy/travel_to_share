@@ -1,0 +1,93 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+<link href='https://fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-2">
+            <h3 class="home_text">The Idea</h3>
+        </div>
+        <div class="col-md-10">
+            <p class="home_sm "> The idea came to me a few years ago: a free website for travelers to indicate their availabilities
+                when they travel and what they would like to share, e.g. a talk or a workshop;
+                and local organizations around the world to indicate their interests and needs,
+                plus their capacity to host a sharing event. </p>
+
+            <p class="home_sm">
+                On the one hand, travels could use this platform to spread his/her ideas and share a few words with the local people.
+                On the other hand, the participants of the event have the rare chance of meeting the speaker face to face.
+                Especially for remote locations and under-served communities, a talk or a workshop might plant a life-changing seed.
+                It is a way of bring together the travelers and the locals.
+            </p>
+
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2">
+            <h3 class="home_text text-muted">An Example</h3>
+        </div>
+        <div class="col-md-10">
+            <p class="home_sm text-muted"> Martin is a Java developer working in Google who is passionate about teaching programing to children.
+                He is traveling to Southern India with his family for 2 months.
+                Martin registers in this website and updates his profile.
+                When he has a travel plan, he shares his travel dates and destinations online.
+                A local NGO in Pundicherry, Tamil Nadu could host 50 people in their meeting room
+                and the local community they support would love to bring in a tech person for a talk.
+                Through this web app, Martin and the local Indian NGO could easily find and contact each other.
+                Some children living around Pundicherry might have a new hobby or even a new direction in life after this free talk.
+            </p>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2">
+            <h3 class="home_text">The Project</h3>
+        </div>
+        <div class="col-md-10">
+            <p class="home_sm">I attended a Python Bootcamp with
+                <a href="https://codingnomads.co" target="_blank">CodingNomads</a>
+                in Bali 2019. When it comes to the final project, I realized that finally I have the skills to bring this
+            idea to life. </p>
+            <p class="home_sm">This is an open source project. The <a href="https://github.com" target="_blank">Github</a>
+                repository could be found <a href="https://github.com/mingyyy/travel_to_share" target="_blank">HERE</a>.
+
+            </p>
+            <p class="home_sm">The main ingredients of the application are:</p>
+            <ul>
+                <li>Python + Django</li>
+                <li>
+                    Javascript (minimal)
+                </li>
+                <li>APIs
+                    <ul>
+                        <li><a href="https://www.joinsherpa.com"  target="_blank">Sherpa</a>
+                            API: visa requirement info (temporarily not available)
+                        </li>
+                        <li><a href="https://cloud.google.com/maps-platform/" target="_blank">Google</a>
+                            API: address autocomplete + geolocation + map
+                        </li>
+                        <li><a href="https://sendgrid.com/docs/API_Reference/index.html" target="_blank">SendGrid</a>
+                            API: Contact Email
+                        </li>
+                        <li><a href="https://restcountries.eu" target="_blank">Country</a>
+                            API: trip destination basic info.
+                        </li>
+                        <li><a href="https://openweathermap.org/api" target="_blank">Weather</a>
+                            API: trip destination current temperature.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+{% endblock %}

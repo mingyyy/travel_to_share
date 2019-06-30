@@ -18,6 +18,10 @@ from decouple import config
 from django.utils.timezone import localdate
 
 
+def about(request):
+    return render(request, 'app_main/about.html')
+
+
 def contact(request):
     if request.method == 'GET':
         form = ContactForm()
