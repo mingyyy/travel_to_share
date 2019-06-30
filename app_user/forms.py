@@ -82,23 +82,27 @@ class FormProfileHostUpdate(forms.ModelForm):
                   'type': "Organization Type",
                   }
         widgets = {"address": GoogleMapsAddressWidget,
-            "geolocation": forms.TextInput(attrs={'placeholder': 'To be filled automatically.',}),
+            "geolocation": forms.Textarea(attrs={'placeholder': 'To be filled automatically.',}),
             'description': forms.Textarea(attrs={'placeholder': 'Tell us more about your organization.'})
                    }
 
 
 class FormProfileHostUpdate2(forms.ModelForm):
-    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
-    interests = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
+    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all(),
+                help_text='Press Ctrl/Command to select multiple languages needed for the events.')
+    interests = forms.ModelMultipleChoiceField(queryset=Topic.objects.all(), label='Subjects of interest',
+                help_text='Press Ctrl/Command to select multiple subjects.')
 
     class Meta:
         model = ProfileHost
         fields = ['interests', 'interest_details', 'languages']
-        labels = {'interests': "Subjects of interest",
-                  'interest_details': "Tell us more about your interests",
+        labels = {
+                  'interest_details': "More of your interest",
                   }
-        widgets = {'languages': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'}),
+        widgets = {
+            'interest_details': forms.Textarea(attrs={'placeholder': 'Please share with us the details of your need.'})
                    }
+
 
 
 class FormSpace(forms.ModelForm):

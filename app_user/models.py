@@ -103,7 +103,7 @@ class ProfileHost(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     type = models.CharField(choices=ORG_TYPE_CHOICE, max_length=30, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    phone = PhoneNumberField(unique=True, null=True, blank=True)
+    phone = PhoneNumberField(null=True, blank=True)
     address = AddressField(max_length=200)
     geolocation = GeoLocationField(blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_host')
