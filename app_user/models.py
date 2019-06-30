@@ -57,7 +57,7 @@ class ProfileTraveler(models.Model):
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
-    phone = PhoneNumberField(unique=True, null=True, blank=True)
+    phone = PhoneNumberField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     languages = models.ManyToManyField(Language)
     expertise = models.ManyToManyField(Topic)

@@ -3,8 +3,8 @@ from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
 
-from django.db import transaction
-from ktag.fields import TagField
+# from django.db import transaction
+# from ktag.fields import TagField
 from .constants import SUBJECT_LIST, LANGUAGE_LIST, SUBJECT_CHOICE
 from django_google_maps.widgets import GoogleMapsAddressWidget
 
@@ -39,30 +39,34 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfileTravelerUpdate(forms.ModelForm):
     '''input_formats=['%Y/%m/%d']'''
     phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
-    birth_date = forms.DateField(input_formats=['%Y-%m-%d'])
-    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
+    birth_date = forms.DateField(input_formats=['%Y-%m-%d'], required=False)
+    languages = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Language.objects.all(),
+        help_text='Only those languages you master professionally.')
 
     class Meta:
         model = ProfileTraveler
         fields = ['gender', 'birth_date', 'nationality', 'phone', 'languages', 'photo']
-        labels = {'nationality': 'Where are you from',  'photo': 'Profile picture'}
-        widgets = {
-                 'languages': forms.Textarea(attrs={'help_text': 'Only those languages you master professionally.'}),
-                }
+        labels = {'nationality': 'Where are you from',
+                  'photo': 'Profile picture',
+                   }
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
+    expertise = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Topic.objects.all(), label='Areas of expertise')
 
     class Meta:
         model = ProfileTraveler
         fields = ['bio', 'expertise', 'experience']
-        labels = {
-                  'expertise': 'Areas of expertise',
-                  'experience': 'More of your experience',
-                  }
+        labels = {'experience': 'More of your expertise', }
         widgets = {
-            'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'}, ),
-            'experience': forms.Textarea(attrs={'placeholder': 'Tell us your professional experience.'},),
+            'bio': forms.Textarea(attrs={'placeholder':
+                  'Tell us more about yourself: what do you like, what is your dream, where have you been, etc.', }, ),
+            'experience': forms.Textarea(attrs={
+                'placeholder': 'Tell us more about your expertise and professional experience.'},),
                 }
 
 
@@ -170,14 +174,14 @@ class FormAddress(forms.ModelForm):
 
 
 # testing language
-class FormLanguage(forms.ModelForm):
-    language = TagField(label='Language:', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
-
-    class Meta:
-        model = ProfileTraveler
-        fields = ['language',]
-        widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
-        labels = {'language': 'Languages'}
+# class FormLanguage(forms.ModelForm):
+#     language = TagField(label='Language:', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+#
+#     class Meta:
+#         model = ProfileTraveler
+#         fields = ['language',]
+#         widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
+#         labels = {'language': 'Languages'}
 
 
 
